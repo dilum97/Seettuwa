@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b3d2e">
+<title>සීට්ටුව — Dilum & Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@500;700&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d16;
+    --paper:#f6efdd;
+    --paper-2:#efe4c9;
+    --line:#c9b787;
+    --green:#0c3d2d;
+    --green-2:#155743;
+    --gold:#b8902e;
+    --gold-2:#dcb35a;
+    --paid:#155743;
+    --unpaid:#a1543a;
+    --shadow: 0 10px 30px rgba(15,30,20,.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: linear-gradient(180deg,#0c3d2d 0%, #0c3d2d 220px, #efe4c9 220px, #efe4c9 100%);
+    font-family:'Noto Sans Sinhala','Inter',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    padding-bottom:calc(40px + env(safe-area-inset-bottom));
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:0 16px;}
+
+  header.top{padding:28px 16px 18px;text-align:center;}
+  header.top .eyebrow{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.18em;
+    color:var(--gold-2);text-transform:uppercase;font-weight:600;
+  }
+  header.top h1{
+    font-family:'Noto Serif Sinhala',serif;
+    color:#fbf5e4;font-size:30px;margin:6px 0 2px;font-weight:700;
+  }
+  header.top p{color:#cfe3d8;font-size:13px;margin:0;}
+
+  .ledger{
+    background:var(--paper);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    margin-top:-46px;
+    padding:18px 16px 22px;
+    border:1px solid var(--line);
+  }
+
+  .tabs{
+    display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:10px 10px 4px 4px;
+    padding:10px 14px 8px;
+    text-align:center;
+    cursor:pointer;
+    min-width:76px;
+    position:relative;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .tab .m{font-family:'Noto Serif Sinhala',serif;font-weight:700;font-size:14px;display:block;}
+  .tab .b{font-size:10px;color:var(--green-2);font-weight:600;display:block;margin-top:3px;}
+  .tab.active{background:var(--green);border-color:var(--green);}
+  .tab.active .m,.tab.active .b{color:#fbf5e4;}
+  .tab.done::after{
+    content:"✓ ගෙවා ඉවරයි";
+  }
+
+  .card-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:2px dashed var(--line);padding-bottom:10px;margin-bottom:4px;
+  }
+  .card-head h2{font-family:'Noto Serif Sinhala',serif;font-size:19px;margin:0;color:var(--green);}
+  .card-head .pot{font-size:12px;color:var(--gold);font-weight:700;}
+
+  .recipient{
+    display:flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg,var(--green),var(--green-2));
+    color:#fbf5e4;border-radius:12px;padding:12px 14px;margin:12px 0 16px;
+  }
+  .recipient .seal{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--gold-2);color:var(--green);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Noto Serif Sinhala',serif;font-weight:700;font-size:16px;
+    flex:0 0 auto;
+  }
+  .recipient .txt small{display:block;font-size:10px;letter-spacing:.08em;color:#d7e8de;text-transform:uppercase;}
+  .recipient .txt strong{font-family:'Noto Serif Sinhala',serif;font-size:17px;}
+
+  .progress-line{font-size:12px;color:var(--green-2);margin:0 0 10px;font-weight:600;}
+
+  ul.members{list-style:none;margin:0;padding:0;}
+  ul.members li{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:11px 2px;border-bottom:1px dotted var(--line);
+    font-size:15px;
+  }
+  ul.members li:last-child{border-bottom:none;}
+  ul.members li .no{
+    display:inline-block;width:20px;color:var(--gold);font-weight:700;font-size:12px;
+  }
+  ul.members li .name{font-weight:600;}
+  ul.members li .name.me{color:var(--green);}
+  .stamp{
+    width:30px;height:30px;border-radius:50%;
+    border:2px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;color:transparent;transition:all .2s ease;
+    flex:0 0 auto;
+  }
+  .stamp.paid{
+    border-color:var(--paid);color:#fff;background:var(--paid);
+    transform:rotate(-6deg);
+  }
+  .stamp.unpaid{border-color:var(--unpaid);}
+  .stamp.unpaid::after{content:"";}
+
+  .empty{
+    text-align:center;padding:40px 10px;color:var(--green-2);
+  }
+  .empty .big{font-family:'Noto Serif Sinhala',serif;font-size:20px;color:var(--green);margin-bottom:6px;}
+
+  footer{text-align:center;font-size:11px;color:#7d8f7f;margin-top:18px;}
+  footer a{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="eyebrow">Chit Fund Ledger</div>
+  <h1>සීට්ටුව</h1>
+  <p>Dilum & Team · මාසෙන් මාසෙට 10,000 බැගින්</p>
+</header>
+
+<div class="wrap">
+  <div class="ledger">
+    <div class="tabs" id="tabs"></div>
+
+    <div id="detail"></div>
+  </div>
+
+  <footer>සජීවීව යාවත්කාලීන වේ · Live synced ledger</footer>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyClVgwZHVcUazA5dm8kJs9QJALr1cDO2-c",
+  authDomain: "seettuwa-581b8.firebaseapp.com",
+  databaseURL: "https://seettuwa-581b8-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "seettuwa-581b8",
+  storageBucket: "seettuwa-581b8.firebasestorage.app",
+  messagingSenderId: "300596692605",
+  appId: "1:300596692605:web:b1b2f49048f0565fb01314"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const MEMBERS = ["Dilum","Isuru","Thilini","Eranda","Kavindu","Pathum","Sahan","Harsha","Ishini","Geethika","Anushika"];
+
+const MONTHS = [
+  {key:"2026-07", label:"ජූලි",        short:"Jul", year:2026, month:7,  recipient:"Dilum"},
+  {key:"2026-08", label:"අගෝස්තු",     short:"Aug", year:2026, month:8,  recipient:"Isuru"},
+  {key:"2026-09", label:"සැප්තැම්බර්", short:"Sep", year:2026, month:9,  recipient:"Thilini"},
+  {key:"2026-10", label:"ඔක්තෝබර්",    short:"Oct", year:2026, month:10, recipient:"Eranda"},
+  {key:"2026-11", label:"නොවැම්බර්",   short:"Nov", year:2026, month:11, recipient:"Kavindu"},
+  {key:"2026-12", label:"දෙසැම්බර්",   short:"Dec", year:2026, month:12, recipient:"Pathum"},
+  {key:"2027-01", label:"ජනවාරි",      short:"Jan", year:2027, month:1,  recipient:"Sahan"},
+  {key:"2027-02", label:"පෙබරවාරි",    short:"Feb", year:2027, month:2,  recipient:"Harsha"},
+  {key:"2027-03", label:"මාර්තු",      short:"Mar", year:2027, month:3,  recipient:"Ishini"},
+  {key:"2027-04", label:"අප්‍රේල්",     short:"Apr", year:2027, month:4,  recipient:"Geethika"},
+  {key:"2027-05", label:"මැයි",        short:"May", year:2027, month:5,  recipient:"Anushika"},
+];
+
+const today = new Date();
+today.setHours(0,0,0,0);
+
+const visibleMonths = MONTHS.filter(m => new Date(m.year, m.month-1, 1) <= today);
+
+const tabsEl = document.getElementById("tabs");
+const detailEl = document.getElementById("detail");
+const paymentState = {}; // monthKey -> {name: bool}
+let activeKey = visibleMonths.length ? visibleMonths[visibleMonths.length-1].key : null;
+
+if(!visibleMonths.length){
+  tabsEl.remove();
+  detailEl.innerHTML = `<div class="empty"><div class="big">තවම මාසයක් ආරම්භ වී නැත</div>ජූලි 1 වෙනිදායින් ලෙජරය ආරම්භ වේ.</div>`;
+} else {
+  visibleMonths.forEach(m=>{
+    const tab = document.createElement("div");
+    tab.className = "tab";
+    tab.dataset.key = m.key;
+    tab.innerHTML = `<span class="m">${m.short}</span><span class="b" data-badge="${m.key}">…</span>`;
+    tab.addEventListener("click", ()=>{ activeKey = m.key; render(); });
+    tabsEl.appendChild(tab);
+  });
+
+  MONTHS.forEach(m=>{
+    onValue(ref(db, `payments/${m.key}`), (snap)=>{
+      paymentState[m.key] = snap.val() || {};
+      updateBadge(m);
+      if(activeKey === m.key) render();
+    });
+  });
+}
+
+function updateBadge(m){
+  const el = tabsEl.querySelector(`[data-badge="${m.key}"]`);
+  if(!el) return;
+  const state = paymentState[m.key] || {};
+  const paidCount = MEMBERS.filter(n=>state[n]).length;
+  el.textContent = `${paidCount}/11`;
+}
+
+function render(){
+  visibleMonths.forEach(m=>{
+    const tabEl = tabsEl.querySelector(`[data-key="${m.key}"]`);
+    if(tabEl) tabEl.classList.toggle("active", m.key===activeKey);
+  });
+
+  const m = visibleMonths.find(x=>x.key===activeKey);
+  if(!m) return;
+  const state = paymentState[m.key] || {};
+  const paidCount = MEMBERS.filter(n=>state[n]).length;
+  const initial = m.recipient.slice(0,1);
+
+  const rows = MEMBERS.map((name,i)=>{
+    const paid = !!state[name];
+    return `<li>
+      <span><span class="no">${i+1}</span><span class="name ${name===m.recipient?'me':''}">${name}${name===m.recipient?' 🏆':''}</span></span>
+      <span class="stamp ${paid?'paid':'unpaid'}">${paid?'✓':''}</span>
+    </li>`;
+  }).join("");
+
+  detailEl.innerHTML = `
+    <div class="card-head">
+      <h2>${m.label} ${m.year}</h2>
+      <span class="pot">Rs. 100,000</span>
+    </div>
+    <div class="recipient">
+      <div class="seal">${initial}</div>
+      <div class="txt">
+        <small>මේ මාසෙ සල්ලි යන්නෙ</small>
+        <strong>${m.recipient} ට</strong>
+      </div>
+    </div>
+    <p class="progress-line">${paidCount} / 11 දෙනා 10,000 බැගින් ගෙවා ඇත</p>
+    <ul class="members">${rows}</ul>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>
