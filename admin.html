@@ -4,143 +4,80 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b3d2e">
-<title>Admin — සීට්ටුව</title>
+<title>Admin — Control Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@500;700&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#211d16;
-    --paper:#f6efdd;
-    --paper-2:#efe4c9;
-    --line:#c9b787;
-    --green:#0c3d2d;
-    --green-2:#155743;
-    --gold:#b8902e;
-    --gold-2:#dcb35a;
-    --paid:#155743;
-    --unpaid:#a1543a;
-    --shadow: 0 10px 30px rgba(15,30,20,.18);
+    --ink:#211d16; --paper:#f6efdd; --paper-2:#efe4c9; --line:#c9b787;
+    --green:#0c3d2d; --green-2:#155743; --gold:#b8902e; --gold-2:#dcb35a;
+    --paid:#155743; --unpaid:#a1543a; --shadow: 0 10px 30px rgba(15,30,20,.18);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  body{
-    background:#0c3d2d;
-    font-family:'Noto Sans Sinhala','Inter',sans-serif;
-    color:var(--ink);
-    min-height:100vh;
-  }
+  body{background:#0c3d2d;font-family:'Noto Sans Sinhala','Inter',sans-serif;color:var(--ink);min-height:100vh;}
   .wrap{max-width:480px;margin:0 auto;padding:0 16px 40px;}
 
-  /* ---- lock screen ---- */
-  #lock{
-    position:fixed;inset:0;background:#0c3d2d;
-    display:flex;align-items:center;justify-content:center;
-    padding:20px;z-index:50;
-  }
-  .lock-card{
-    background:var(--paper);border-radius:18px;box-shadow:var(--shadow);
-    padding:32px 26px;width:100%;max-width:340px;text-align:center;
-    border:1px solid var(--line);
-  }
-  .lock-card .seal{
-    width:56px;height:56px;border-radius:50%;background:var(--green);
-    color:var(--gold-2);display:flex;align-items:center;justify-content:center;
-    font-family:'Noto Serif Sinhala',serif;font-size:24px;font-weight:700;
-    margin:0 auto 14px;
-  }
+  #lock{position:fixed;inset:0;background:#0c3d2d;display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;}
+  .lock-card{background:var(--paper);border-radius:18px;box-shadow:var(--shadow);padding:32px 26px;width:100%;max-width:340px;text-align:center;border:1px solid var(--line);}
+  .lock-card .seal{width:56px;height:56px;border-radius:50%;background:var(--green);color:var(--gold-2);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif Sinhala',serif;font-size:24px;font-weight:700;margin:0 auto 14px;}
   .lock-card h1{font-family:'Noto Serif Sinhala',serif;font-size:20px;margin:0 0 4px;color:var(--green);}
   .lock-card p{font-size:13px;color:#6b7a6d;margin:0 0 18px;}
-  .lock-card input{
-    width:100%;padding:14px;font-size:20px;letter-spacing:.3em;text-align:center;
-    border:1px solid var(--line);border-radius:10px;background:#fffdf6;
-    margin-bottom:12px;font-family:'Inter',sans-serif;
-  }
+  .lock-card input{width:100%;padding:14px;font-size:20px;letter-spacing:.3em;text-align:center;border:1px solid var(--line);border-radius:10px;background:#fffdf6;margin-bottom:12px;font-family:'Inter',sans-serif;}
   .lock-card input:focus{outline:2px solid var(--gold);}
-  .lock-card button{
-    width:100%;padding:13px;border:none;border-radius:10px;
-    background:var(--green);color:#fbf5e4;font-size:15px;font-weight:700;
-    cursor:pointer;font-family:'Noto Sans Sinhala',sans-serif;
-  }
-  .lock-card button:active{background:var(--green-2);}
+  .lock-card button{width:100%;padding:13px;border:none;border-radius:10px;background:var(--green);color:#fbf5e4;font-size:15px;font-weight:700;cursor:pointer;font-family:'Noto Sans Sinhala',sans-serif;}
   .lock-err{color:var(--unpaid);font-size:12px;height:16px;margin-top:8px;}
 
-  /* ---- admin panel ---- */
-  header.top{padding:22px 16px 16px;text-align:center;}
+  header.top{padding:22px 16px 14px;text-align:center;}
   header.top .eyebrow{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.18em;color:var(--gold-2);text-transform:uppercase;font-weight:600;}
-  header.top h1{font-family:'Noto Serif Sinhala',serif;color:#fbf5e4;font-size:24px;line-height:1.5;margin:6px 0 8px;font-weight:700;}
-  header.top p{color:#cfe3d8;font-size:12px;margin:0;}
+  header.top h1{font-family:'Noto Serif Sinhala',serif;color:#fbf5e4;font-size:22px;line-height:1.5;margin:6px 0 4px;font-weight:700;}
 
-  .ledger{
-    background:var(--paper);border-radius:18px;box-shadow:var(--shadow);
-    margin-top:-20px;padding:18px 16px 22px;border:1px solid var(--line);
+  .group-tabs{display:flex;gap:8px;padding:0 2px 14px;}
+  .group-tab{
+    flex:1;background:var(--paper-2);border:1px solid var(--line);border-radius:12px;
+    padding:12px 6px;text-align:center;cursor:pointer;font-weight:700;font-size:14px;
+    color:var(--green-2);transition:background .15s ease;
   }
+  .group-tab.active{background:var(--green);color:#fbf5e4;border-color:var(--green);}
+
+  .ledger{background:var(--paper);border-radius:18px;box-shadow:var(--shadow);padding:18px 16px 22px;border:1px solid var(--line);}
+  .group-section{display:none;}
+  .group-section.active{display:block;}
 
   .tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:none;}
   .tabs::-webkit-scrollbar{display:none;}
-  .tab{
-    flex:0 0 auto;background:var(--paper-2);border:1px solid var(--line);
-    border-radius:10px 10px 4px 4px;padding:10px 14px 8px;text-align:center;
-    cursor:pointer;min-width:76px;transition:background .15s ease;
-  }
+  .tab{flex:0 0 auto;background:var(--paper-2);border:1px solid var(--line);border-radius:10px 10px 4px 4px;padding:10px 14px 8px;text-align:center;cursor:pointer;min-width:76px;transition:background .15s ease;}
   .tab .m{font-family:'Noto Serif Sinhala',serif;font-weight:700;font-size:14px;display:block;}
   .tab .b{font-size:10px;color:var(--green-2);font-weight:600;display:block;margin-top:3px;}
   .tab.active{background:var(--green);border-color:var(--green);}
   .tab.active .m,.tab.active .b{color:#fbf5e4;}
 
-  .card-head{
-    display:flex;align-items:baseline;justify-content:space-between;
-    border-bottom:2px dashed var(--line);padding-bottom:10px;margin-bottom:4px;
-  }
+  .card-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px dashed var(--line);padding-bottom:10px;margin-bottom:4px;}
   .card-head h2{font-family:'Noto Serif Sinhala',serif;font-size:19px;margin:0;color:var(--green);}
   .card-head .pot{font-size:12px;color:var(--gold);font-weight:700;}
 
-  .recipient{
-    display:flex;align-items:center;gap:10px;
-    background:linear-gradient(135deg,var(--green),var(--green-2));
-    color:#fbf5e4;border-radius:12px;padding:12px 14px;margin:12px 0 16px;
-  }
-  .recipient .seal2{
-    width:38px;height:38px;border-radius:50%;background:var(--gold-2);color:var(--green);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Noto Serif Sinhala',serif;font-weight:700;font-size:16px;flex:0 0 auto;
-  }
+  .recipient{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--green),var(--green-2));color:#fbf5e4;border-radius:12px;padding:12px 14px;margin:12px 0 16px;}
+  .recipient .seal2{width:38px;height:38px;border-radius:50%;background:var(--gold-2);color:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif Sinhala',serif;font-weight:700;font-size:16px;flex:0 0 auto;}
   .recipient .txt small{display:block;font-size:10px;letter-spacing:.08em;color:#d7e8de;text-transform:uppercase;}
   .recipient .txt strong{font-family:'Noto Serif Sinhala',serif;font-size:17px;}
 
   .progress-line{font-size:12px;color:var(--green-2);margin:0 0 4px;font-weight:600;}
-  .total-amount{
-    font-family:'Noto Serif Sinhala',serif;
-    font-size:20px;color:var(--gold);font-weight:700;margin:0 0 14px;
-  }
+  .total-amount{font-family:'Noto Serif Sinhala',serif;font-size:20px;color:var(--gold);font-weight:700;margin:0 0 14px;}
 
   ul.members{list-style:none;margin:0;padding:0;}
-  ul.members li{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:11px 2px;border-bottom:1px dotted var(--line);font-size:15px;
-  }
+  ul.members li{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px dotted var(--line);font-size:15px;}
   ul.members li:last-child{border-bottom:none;}
   ul.members li .no{display:inline-block;width:20px;color:var(--gold);font-weight:700;font-size:12px;}
   ul.members li .name{font-weight:600;}
   ul.members li .name.me{color:var(--green);}
 
-  .toggle{
-    width:52px;height:30px;border-radius:20px;background:#e3d8b6;
-    border:1px solid var(--line);position:relative;cursor:pointer;flex:0 0 auto;
-    transition:background .2s ease;
-  }
-  .toggle .knob{
-    position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;
-    background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s ease;
-    display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;
-  }
+  .toggle{width:52px;height:30px;border-radius:20px;background:#e3d8b6;border:1px solid var(--line);position:relative;cursor:pointer;flex:0 0 auto;transition:background .2s ease;}
+  .toggle .knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s ease;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;}
   .toggle.on{background:var(--paid);}
   .toggle.on .knob{transform:translateX(22px);color:var(--paid);}
 
-  .lock-out-btn{
-    display:block;margin:18px auto 0;background:none;border:none;
-    color:#8a7a4d;font-size:12px;text-decoration:underline;cursor:pointer;
-  }
+  .lock-out-btn{display:block;margin:18px auto 0;background:none;border:none;color:#8a7a4d;font-size:12px;text-decoration:underline;cursor:pointer;}
   footer{text-align:center;font-size:11px;color:#7d8f7f;margin-top:18px;}
 </style>
 </head>
@@ -158,15 +95,28 @@
 </div>
 
 <header class="top">
-  <div class="eyebrow">Admin Panel</div>
-  <h1>සීට්ටුව — කළමනාකරණය</h1>
+  <div class="eyebrow">Control Hub</div>
+  <h1>සීට්ටු — කළමනාකරණය</h1>
 </header>
 
 <div class="wrap">
-  <div class="ledger">
-    <div class="tabs" id="tabs"></div>
-    <div id="detail"></div>
+  <div class="group-tabs">
+    <div class="group-tab active" data-group="stw2025">සීට්ටුව 2025</div>
+    <div class="group-tab" data-group="stw2026">සීට්ටුව 2026</div>
   </div>
+
+  <div class="ledger">
+    <div class="group-section active" id="sec-stw2025">
+      <div class="tabs" id="tabs-stw2025"></div>
+      <div id="detail-stw2025"></div>
+    </div>
+
+    <div class="group-section" id="sec-stw2026">
+      <div class="tabs" id="tabs-stw2026"></div>
+      <div id="detail-stw2026"></div>
+    </div>
+  </div>
+
   <button class="lock-out-btn" id="logoutBtn">🔒 Log out</button>
   <footer>Firebase RTDB · seettuwa-581b8</footer>
 </div>
@@ -189,23 +139,39 @@ const db = getDatabase(app);
 
 const ADMIN_PASSWORD = "5422";
 
-const MEMBERS = ["දිලුම්","ඉසුරු","තිලිනි","එරන්ද","කවිඳු","පැතුම්","සහන්","හර්ශ","ඉශිනි","ගීතිකා","අනුශිකා"];
-
-const MONTHS = [
-  {key:"2026-07", label:"ජූලි",        short:"Jul", year:2026, month:7,  recipient:"දිලුම්"},
-  {key:"2026-08", label:"අගෝස්තු",     short:"Aug", year:2026, month:8,  recipient:"ඉසුරු"},
-  {key:"2026-09", label:"සැප්තැම්බර්", short:"Sep", year:2026, month:9,  recipient:"තිලිනි"},
-  {key:"2026-10", label:"ඔක්තෝබර්",    short:"Oct", year:2026, month:10, recipient:"එරන්ද"},
-  {key:"2026-11", label:"නොවැම්බර්",   short:"Nov", year:2026, month:11, recipient:"කවිඳු"},
-  {key:"2026-12", label:"දෙසැම්බර්",   short:"Dec", year:2026, month:12, recipient:"පැතුම්"},
-  {key:"2027-01", label:"ජනවාරි",      short:"Jan", year:2027, month:1,  recipient:"සහන්"},
-  {key:"2027-02", label:"පෙබරවාරි",    short:"Feb", year:2027, month:2,  recipient:"හර්ශ"},
-  {key:"2027-03", label:"මාර්තු",      short:"Mar", year:2027, month:3,  recipient:"ඉශිනි"},
-  {key:"2027-04", label:"අප්‍රේල්",     short:"Apr", year:2027, month:4,  recipient:"ගීතිකා"},
-  {key:"2027-05", label:"මැයි",        short:"May", year:2027, month:5,  recipient:"අනුශිකා"},
+/* ================= සීට්ටුව 2025 ================= */
+const MEMBERS_2025 = ["දිලුම්","මෙනුරි","තිලිනි","අනුශිකා","සඳරු","ගීතිකා","චතුරංග","චමිඳු","සචින්තා","නිසන්සලා","මල්ශානි"];
+const MONTHS_2025 = [
+  {key:"2025-08", label:"අගෝස්තු",     short:"Aug", year:2025, month:8,  recipient:"දිලුම්"},
+  {key:"2025-09", label:"සැප්තැම්බර්", short:"Sep", year:2025, month:9,  recipient:"මෙනුරි"},
+  {key:"2025-10", label:"ඔක්තෝබර්",    short:"Oct", year:2025, month:10, recipient:"තිලිනි"},
+  {key:"2025-11", label:"නොවැම්බර්",   short:"Nov", year:2025, month:11, recipient:"අනුශිකා"},
+  {key:"2025-12", label:"දෙසැම්බර්",   short:"Dec", year:2025, month:12, recipient:"සඳරු"},
+  {key:"2026-01", label:"ජනවාරි",      short:"Jan", year:2026, month:1,  recipient:"ගීතිකා"},
+  {key:"2026-02", label:"පෙබරවාරි",    short:"Feb", year:2026, month:2,  recipient:"චතුරංග"},
+  {key:"2026-03", label:"මාර්තු",      short:"Mar", year:2026, month:3,  recipient:"චමිඳු"},
+  {key:"2026-04", label:"අප්‍රේල්",     short:"Apr", year:2026, month:4,  recipient:"සචින්තා"},
+  {key:"2026-05", label:"මැයි",        short:"May", year:2026, month:5,  recipient:"නිසන්සලා"},
+  {key:"2026-06", label:"ජූනි",        short:"Jun", year:2026, month:6,  recipient:"මල්ශානි"},
 ];
 
-/* ---- lock screen logic ---- */
+/* ================= සීට්ටුව 2026 ================= */
+const MEMBERS_2026 = ["Dilum","Isuru","Thilini","Eranda","Kavindu","Pathum","Sahan","Harsha","Ishini","Geethika","Anushika"];
+const MONTHS_2026 = [
+  {key:"2026-07", label:"ජූලි",        short:"Jul", year:2026, month:7,  recipient:"Dilum"},
+  {key:"2026-08", label:"අගෝස්තු",     short:"Aug", year:2026, month:8,  recipient:"Isuru"},
+  {key:"2026-09", label:"සැප්තැම්බර්", short:"Sep", year:2026, month:9,  recipient:"Thilini"},
+  {key:"2026-10", label:"ඔක්තෝබර්",    short:"Oct", year:2026, month:10, recipient:"Eranda"},
+  {key:"2026-11", label:"නොවැම්බර්",   short:"Nov", year:2026, month:11, recipient:"Kavindu"},
+  {key:"2026-12", label:"දෙසැම්බර්",   short:"Dec", year:2026, month:12, recipient:"Pathum"},
+  {key:"2027-01", label:"ජනවාරි",      short:"Jan", year:2027, month:1,  recipient:"Sahan"},
+  {key:"2027-02", label:"පෙබරවාරි",    short:"Feb", year:2027, month:2,  recipient:"Harsha"},
+  {key:"2027-03", label:"මාර්තු",      short:"Mar", year:2027, month:3,  recipient:"Ishini"},
+  {key:"2027-04", label:"අප්‍රේල්",     short:"Apr", year:2027, month:4,  recipient:"Geethika"},
+  {key:"2027-05", label:"මැයි",        short:"May", year:2027, month:5,  recipient:"Anushika"},
+];
+
+/* ---- lock screen ---- */
 const lockEl = document.getElementById("lock");
 const pwdInput = document.getElementById("pwd");
 const pwdBtn = document.getElementById("pwdBtn");
@@ -223,29 +189,40 @@ function tryUnlock(){
 }
 pwdBtn.addEventListener("click", tryUnlock);
 pwdInput.addEventListener("keydown", e=>{ if(e.key==="Enter") tryUnlock(); });
-
 document.getElementById("logoutBtn").addEventListener("click", ()=>{
   sessionStorage.removeItem("seettuwa_admin_ok");
   location.reload();
 });
-
 if(sessionStorage.getItem("seettuwa_admin_ok") === "1"){
   lockEl.style.display = "none";
   boot();
 }
 
-/* ---- admin panel logic ---- */
+/* ---- group tab switching ---- */
+document.querySelectorAll(".group-tab").forEach(tab=>{
+  tab.addEventListener("click", ()=>{
+    document.querySelectorAll(".group-tab").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".group-section").forEach(s=>s.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById("sec-"+tab.dataset.group).classList.add("active");
+  });
+});
+
 let booted = false;
 function boot(){
   if(booted) return;
   booted = true;
+  bootGroup("stw2025", MEMBERS_2025, MONTHS_2025, "Rs. 100,000");
+  bootGroup("stw2026", MEMBERS_2026, MONTHS_2026, "Rs. 100,000");
+}
 
-  const tabsEl = document.getElementById("tabs");
-  const detailEl = document.getElementById("detail");
+/* ================= GENERIC SEETTUWA LOGIC ================= */
+function bootGroup(groupId, MEMBERS, MONTHS, potLabel){
+  const tabsEl = document.getElementById(`tabs-${groupId}`);
+  const detailEl = document.getElementById(`detail-${groupId}`);
   const paymentState = {};
   let activeKey = MONTHS[0].key;
 
-  // pick current/most relevant month as default
   const today = new Date(); today.setHours(0,0,0,0);
   const currentOrLatest = MONTHS.filter(m => new Date(m.year, m.month-1,1) <= today).pop();
   if(currentOrLatest) activeKey = currentOrLatest.key;
@@ -254,7 +231,7 @@ function boot(){
     const tab = document.createElement("div");
     tab.className = "tab";
     tab.dataset.key = m.key;
-    tab.innerHTML = `<span class="m">${m.short}</span><span class="b" data-badge="${m.key}">…</span>`;
+    tab.innerHTML = `<span class="m">${m.short}</span><span class="b" data-badge="${groupId}-${m.key}">…</span>`;
     tab.addEventListener("click", ()=>{ activeKey = m.key; render(); });
     tabsEl.appendChild(tab);
 
@@ -266,7 +243,7 @@ function boot(){
   });
 
   function updateBadge(m){
-    const el = tabsEl.querySelector(`[data-badge="${m.key}"]`);
+    const el = tabsEl.querySelector(`[data-badge="${groupId}-${m.key}"]`);
     if(!el) return;
     const state = paymentState[m.key] || {};
     const paidCount = MEMBERS.filter(n=>state[n]).length;
@@ -282,7 +259,6 @@ function boot(){
       const tabEl = tabsEl.querySelector(`[data-key="${m.key}"]`);
       if(tabEl) tabEl.classList.toggle("active", m.key===activeKey);
     });
-
     const m = MONTHS.find(x=>x.key===activeKey);
     if(!m) return;
     const state = paymentState[m.key] || {};
@@ -298,22 +274,15 @@ function boot(){
     }).join("");
 
     detailEl.innerHTML = `
-      <div class="card-head">
-        <h2>${m.label} ${m.year}</h2>
-        <span class="pot">Rs. 100,000</span>
-      </div>
+      <div class="card-head"><h2>${m.label} ${m.year}</h2><span class="pot">${potLabel}</span></div>
       <div class="recipient">
         <div class="seal2">${initial}</div>
-        <div class="txt">
-          <small>This month for</small>
-          <strong>${m.recipient}</strong>
-        </div>
+        <div class="txt"><small>This month for</small><strong>${m.recipient}</strong></div>
       </div>
       <p class="progress-line">${paidCount} / 11 දෙනා ගෙවා ඇත</p>
       <p class="total-amount">Rs. ${(paidCount*10000).toLocaleString()} එකතු වී ඇත</p>
       <ul class="members">${rows}</ul>
     `;
-
     detailEl.querySelectorAll(".toggle").forEach(t=>{
       t.addEventListener("click", ()=>{
         const name = t.dataset.name;
@@ -322,7 +291,6 @@ function boot(){
       });
     });
   }
-
   render();
 }
 </script>
