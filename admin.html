@@ -68,7 +68,7 @@
   /* ---- admin panel ---- */
   header.top{padding:22px 16px 16px;text-align:center;}
   header.top .eyebrow{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.18em;color:var(--gold-2);text-transform:uppercase;font-weight:600;}
-  header.top h1{font-family:'Noto Serif Sinhala',serif;color:#fbf5e4;font-size:24px;margin:6px 0 2px;font-weight:700;}
+  header.top h1{font-family:'Noto Serif Sinhala',serif;color:#fbf5e4;font-size:24px;line-height:1.5;margin:6px 0 8px;font-weight:700;}
   header.top p{color:#cfe3d8;font-size:12px;margin:0;}
 
   .ledger{
@@ -108,7 +108,11 @@
   .recipient .txt small{display:block;font-size:10px;letter-spacing:.08em;color:#d7e8de;text-transform:uppercase;}
   .recipient .txt strong{font-family:'Noto Serif Sinhala',serif;font-size:17px;}
 
-  .progress-line{font-size:12px;color:var(--green-2);margin:0 0 10px;font-weight:600;}
+  .progress-line{font-size:12px;color:var(--green-2);margin:0 0 4px;font-weight:600;}
+  .total-amount{
+    font-family:'Noto Serif Sinhala',serif;
+    font-size:20px;color:var(--gold);font-weight:700;margin:0 0 14px;
+  }
 
   ul.members{list-style:none;margin:0;padding:0;}
   ul.members li{
@@ -302,11 +306,12 @@ function boot(){
       <div class="recipient">
         <div class="seal2">${initial}</div>
         <div class="txt">
-          <small>මේ මාසෙ සල්ලි යන්නෙ</small>
-          <strong>${m.recipient} ට</strong>
+          <small>This month for</small>
+          <strong>${m.recipient}</strong>
         </div>
       </div>
-      <p class="progress-line">${paidCount} / 11 දෙනා 10,000 බැගින් ගෙවා ඇත</p>
+      <p class="progress-line">${paidCount} / 11 දෙනා ගෙවා ඇත</p>
+      <p class="total-amount">Rs. ${(paidCount*10000).toLocaleString()} එකතු වී ඇත</p>
       <ul class="members">${rows}</ul>
     `;
 
