@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b3d2e">
+<title>සීට්ටුව — Control Hub</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="සීට්ටුව">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@500;700&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d16; --paper:#f6efdd; --paper-2:#efe4c9; --line:#c9b787;
+    --green:#0c3d2d; --green-2:#155743; --gold:#b8902e; --gold-2:#dcb35a;
+    --shadow: 0 10px 30px rgba(15,30,20,.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: linear-gradient(180deg,#0c3d2d 0%, #0c3d2d 240px, #efe4c9 240px, #efe4c9 100%);
+    font-family:'Noto Sans Sinhala','Inter',sans-serif;color:var(--ink);min-height:100vh;
+    padding-bottom:calc(30px + env(safe-area-inset-bottom));
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:0 16px;}
+  header.top{padding:32px 16px 20px;text-align:center;}
+  header.top .eyebrow{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.18em;color:var(--gold-2);text-transform:uppercase;font-weight:600;}
+  header.top h1{font-family:'Noto Serif Sinhala',serif;color:#fbf5e4;font-size:30px;line-height:1.5;margin:6px 0 4px;font-weight:700;}
+  header.top p{color:#cfe3d8;font-size:13px;margin:0;}
+
+  .cards{margin-top:-40px;display:flex;flex-direction:column;gap:14px;}
+  a.card{
+    display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);
+    background:var(--paper);border-radius:16px;box-shadow:var(--shadow);
+    padding:16px 18px;border:1px solid var(--line);transition:transform .15s ease;
+  }
+  a.card:active{transform:scale(.98);}
+  .card .seal{
+    width:48px;height:48px;border-radius:50%;background:var(--green);color:var(--gold-2);
+    display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto;
+  }
+  .card .txt strong{font-family:'Noto Serif Sinhala',serif;font-size:17px;color:var(--green);display:block;}
+  .card .txt span{font-size:12px;color:#6b7a6d;}
+  .card .status{margin-left:auto;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;flex:0 0 auto;}
+  .status.live{background:#d7ecdf;color:var(--green-2);}
+  .status.done{background:#e6ded0;color:#8a7a4d;}
+
+  .admin-link{
+    display:block;text-align:center;margin-top:22px;color:var(--gold-2);
+    font-size:13px;text-decoration:underline;
+  }
+  footer{text-align:center;font-size:11px;color:#7d8f7f;margin-top:24px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="eyebrow">Control Hub</div>
+  <h1>සීට්ටුව</h1>
+  <p>ඔයාගේ සියලුම funds එකම තැනකින්</p>
+</header>
+
+<div class="wrap">
+  <div class="cards">
+    <a class="card" href="stw2025.html">
+      <div class="seal">📜</div>
+      <div class="txt"><strong>සීට්ටුව 2025</strong><span>අගෝස්තු 2025 – ජූනි 2026 · Rs. 100,000</span></div>
+    </a>
+
+    <a class="card" href="stw2026.html">
+      <div class="seal">💰</div>
+      <div class="txt"><strong>සීට්ටුව 2026</strong><span>ජූලි 2026 – මැයි 2027 · Rs. 100,000</span></div>
+    </a>
+
+    <a class="card" href="partybox.html">
+      <div class="seal">🎁</div>
+      <div class="txt"><strong>Party Box Installments</strong><span>Group buying installment tracker</span></div>
+    </a>
+  </div>
+
+  <footer>Firebase RTDB · seettuwa-581b8</footer>
+</div>
+
+</body>
+</html>
