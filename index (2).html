@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <link rel="manifest" href="/partybox2/manifest.json">
+<link rel="apple-touch-icon" href="/partybox2/icon.png">
+<meta name="theme-color" content="#FF6B6B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PartyBox">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Party Box - Payment Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .table-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1em;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            min-width: 120px;
+        }
+
+        th:first-child {
+            min-width: 150px;
+        }
+
+        th:nth-child(2) {
+            min-width: 140px;
+        }
+
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            min-width: 120px;
+            height: 70px;
+        }
+
+        tr {
+            background: white;
+        }
+
+        tbody tr:not(.group-row):not(.totals-row) td {
+            border-left: 1px solid #e9ecef;
+        }
+
+        tbody tr:not(.group-row):not(.totals-row) td:first-child {
+            border-left: none;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+
+        tbody tr:not(.group-row):not(.totals-row) td:last-child {
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        td:first-child {
+            min-width: 150px;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 5px !important;
+        }
+
+        .name-button {
+            width: 100%;
+            height: 60px;
+            padding: 0 24px;
+            background: linear-gradient(#3DF346, #2962F0 0%, #3DF346 100%);
+            color: black;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.2em;
+            text-align: left;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+        }
+
+        .name-button:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #3DF346 100%);
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .name-button:active {
+            transform: scale(0.98);
+        }
+
+        td:nth-child(2) {
+            min-width: 140px;
+            border-left: none;
+        }
+
+        .month-cell {
+            text-align: right;
+            font-weight: 500;
+            color: #155724;
+            font-size: 1.05em;
+            background: #d4edda;
+            border-radius: 10px;
+        }
+
+        .amount-cell {
+            font-weight: 600;
+            text-align: right;
+            font-size: 1.05em;
+            background: #87E978;
+            border-radius: 10px;
+        }
+
+        .paid-amount {
+            color: #00000;
+        }
+
+        .to-pay-amount {
+            color: #dc3545;
+        }
+
+        .empty-cell {
+            color: #721c24;
+            text-align: right;
+            font-size: 1.05em;
+            background: #f8d7da;
+        }
+
+        .paid-cell {
+            background: #c8f7c5 !important;
+            color: #155724;
+            font-weight: 600;
+        }
+
+        .group-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2em;
+            padding: 15px 20px !important;
+            text-align: center;
+        }
+
+        .group-row {
+            border-top: 3px solid #00000;
+        }
+
+        .totals-row {
+            border-top: 4px solid #000 !important;
+            background: #f8f9fa !important;
+        }
+
+        .totals-row td {
+            font-weight: 700 !important;
+            font-size: 1.1em;
+            padding: 20px !important;
+        }
+
+        .totals-row td:first-child {
+            color: #667eea;
+            font-size: 1.3em;
+            padding-left: 30px !important;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            margin: 20px 30px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .summary-card h3 {
+            color: #6c757d;
+            font-size: 1em;
+            margin-bottom: 12px;
+        }
+
+        .summary-card .value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideDown 0.3s;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .modal-header .item-amount {
+            margin-top: 10px;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            transition: transform 0.2s;
+        }
+
+        .close:hover {
+            transform: scale(1.2);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .payment-card {
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .payment-card.paid {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .payment-card.unpaid {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .payment-card.empty {
+            background: #f8f9fa;
+            border-color: #dee2e6;
+            opacity: 0.6;
+        }
+
+        .payment-card .month-name {
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+
+        .payment-card .amount {
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+
+        .payment-card.paid .amount {
+            color: #28a745;
+        }
+
+        .payment-card.unpaid .amount {
+            color: #856404;
+        }
+
+        .payment-card.empty .amount {
+            color: #adb5bd;
+        }
+
+        .summary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .summary-item.paid {
+            background: #d4edda;
+        }
+
+        .summary-item.topay {
+            background: #f8d7da;
+        }
+
+        .summary-item h3 {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .summary-item .amount {
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .summary-item.paid .amount {
+            color: #28a745;
+        }
+
+        .summary-item.topay .amount {
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px 12px;
+                min-width: 100px;
+            }
+
+            th:first-child, td:first-child {
+                min-width: 120px;
+            }
+
+            .name-button {
+                padding: 10px 12px;
+                font-size: 0.9em;
+                margin: 3px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                max-height: 80vh;
+            }
+
+            .modal-header h2 {
+                font-size: 1.4em;
+            }
+
+            .payment-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
+            }
+
+            .payment-card {
+                padding: 12px;
+            }
+
+            .payment-card .amount {
+                font-size: 1.1em;
+            }
+
+            .group-header {
+                font-size: 1em;
+                padding: 12px 15px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Party Box Payment Tracker</h1>
+            <p>Real-time Payment Dashboard</p>
+        </div>
+
+        <div class="summary" id="summary" style="display:none;">
+            <div class="summary-card">
+                <h3>Total Members</h3>
+                <div class="value" id="totalRecords">0</div>
+            </div>
+            <div class="summary-card">
+                <h3>Total Paid</h3>
+                <div class="value paid-amount" id="totalPaid">Rs. 0</div>
+            </div>
+            <div class="summary-card">
+                <h3>Total To Pay</h3>
+                <div class="value to-pay-amount" id="totalToPay">Rs. 0</div>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="loading">⏳ Loading data...</div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="modalName"></h2>
+                <div class="item-amount" id="modalItemAmount"></div>
+            </div>
+            <div class="modal-body">
+                <div class="payment-grid" id="paymentGrid"></div>
+                <div class="summary-row">
+                    <div class="summary-item paid">
+                        <h3>PAID AMOUNT</h3>
+                        <div class="amount" id="modalPaidAmount">Rs. 0</div>
+                    </div>
+                    <div class="summary-item topay">
+                        <h3>TO PAY</h3>
+                        <div class="amount" id="modalToPayAmount">Rs. 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // මේ line එකේ විතරක් URL එක වෙනස් කරන්න
+        const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyiwUb-fDNBWzf4zRhiJpp2fFbGmoUV17iMqt1d4f6mTnQFUC7XRVnLl-5Od5l7-VLH/exec';
+
+        let allData = [];
+
+        async function loadData() {
+            const content = document.getElementById('content');
+            content.innerHTML = '<div class="loading">⏳ Data loading...</div>';
+
+            try {
+                const response = await fetch(GOOGLE_SHEET_URL);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                
+                if (data.length === 0) {
+                    content.innerHTML = '<div class="error">Google Sheet එකේ data නැහැ!</div>';
+                    return;
+                }
+
+                allData = data;
+                displayData(data);
+                calculateSummary(data);
+                
+            } catch (error) {
+                content.innerHTML = `<div class="error">❌ Error: ${error.message}<br><br>
+                කරුණාකර:<br>
+                1. Google Apps Script deploy කරලා තියෙනවාද බලන්න<br>
+                2. "Anyone" ට access තියෙනවාද බලන්න<br>
+                3. HTML file එකේ GOOGLE_SHEET_URL එක නිවැරදිද බලන්න</div>`;
+            }
+        }
+
+        function displayData(data) {
+            const months = ['OCTOBER', 'NOVEMBER', 'DECEMBER', 'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY'];
+            
+            // Add base item amount for grouping
+            const dataWithBase = data.map(row => {
+                let baseAmount = parseFloat(row['ITEM AMOUNT']) || 0;
+                const name = (row.NAME || '').toLowerCase();
+                
+                // Check if name contains indication of multiple boxes
+                if (name.includes('sandaru') || baseAmount === 106000) {
+                    baseAmount = 26500; // Set to single box amount for grouping
+                }
+                
+                return {
+                    ...row,
+                    BASE_AMOUNT: baseAmount,
+                    DISPLAY_AMOUNT: parseFloat(row['ITEM AMOUNT']) || 0
+                };
+            });
+            
+            // Sort data by BASE_AMOUNT (descending)
+            const sortedData = dataWithBase.sort((a, b) => {
+                return b.BASE_AMOUNT - a.BASE_AMOUNT;
+            });
+            
+            let html = '<div class="table-container"><table><thead><tr>';
+            html += '<th>NAME</th>';
+            html += '<th>ITEM AMOUNT</th>';
+            
+            months.forEach(month => {
+                html += `<th>${month}</th>`;
+            });
+            
+            html += '<th>PAID AMOUNT</th>';
+            html += '<th>AMOUNT TO PAY</th>';
+            html += '</tr></thead><tbody>';
+
+            let currentBaseAmount = null;
+            
+            sortedData.forEach((row, index) => {
+                const baseAmount = row.BASE_AMOUNT;
+                
+                // Add group header when base amount changes
+                if (currentBaseAmount !== baseAmount) {
+                    currentBaseAmount = baseAmount;
+                    html += `<tr class="group-row"><td colspan="${months.length + 4}" class="group-header">📦 Item Amount: Rs. ${formatNumber(baseAmount)}</td></tr>`;
+                }
+                
+                // Find original index for showDetails
+                const originalIndex = allData.findIndex(r => r.NAME === row.NAME);
+                
+                html += '<tr>';
+                html += `<td><button class="name-button" onclick="showDetails(${originalIndex})"> ${row.NAME || ''}</button></td>`;
+                html += `<td class="amount-cell">Rs. ${formatNumber(row.DISPLAY_AMOUNT)}</td>`;
+                
+                months.forEach(month => {
+                    const value = row[month];
+                    if (value && value !== '' && value !== 0) {
+                        html += `<td class="month-cell">Rs. ${formatNumber(value)}</td>`;
+                    } else {
+                        html += `<td class="empty-cell">-</td>`;
+                    }
+                });
+                
+                html += `<td class="amount-cell paid-amount">Rs. ${formatNumber(row['PAID AMOUNT'] || 0)}</td>`;
+                html += `<td class="amount-cell to-pay-amount">Rs. ${formatNumber(row['AMOUNT TO PAY'] || 0)}</td>`;
+                html += '</tr>';
+            });
+
+            // Calculate monthly totals
+            const monthlyTotals = {};
+            months.forEach(month => {
+                monthlyTotals[month] = sortedData.reduce((sum, row) => {
+                    const value = parseFloat(row[month]) || 0;
+                    return sum + value;
+                }, 0);
+            });
+            
+            const totalPaidAmount = sortedData.reduce((sum, row) => sum + (parseFloat(row['PAID AMOUNT']) || 0), 0);
+            const totalToPayAmount = sortedData.reduce((sum, row) => sum + (parseFloat(row['AMOUNT TO PAY']) || 0), 0);
+            const totalItemAmount = sortedData.reduce((sum, row) => sum + (parseFloat(row.DISPLAY_AMOUNT) || 0), 0);
+            
+            // Add totals row
+            html += '<tr class="totals-row">';
+            html += '<td style="padding-left: 30px;">💰 TOTAL</td>';
+            html += `<td class="amount-cell" style="font-weight: 700; background: #667eea; color: white; border-radius: 10px;">Rs. ${formatNumber(totalItemAmount)}</td>`;
+            
+            months.forEach(month => {
+                const total = monthlyTotals[month];
+                if (total > 0) {
+                    html += `<td class="month-cell" style="font-weight: 700; background: #667eea; color: white; border-radius: 10px;">Rs. ${formatNumber(total)}</td>`;
+                } else {
+                    html += `<td style="text-align: center; color: #6c757d;">-</td>`;
+                }
+            });
+            
+            html += `<td class="amount-cell paid-amount" style="font-weight: 700; background: #28a745; color: white; border-radius: 10px;">Rs. ${formatNumber(totalPaidAmount)}</td>`;
+            html += `<td class="amount-cell to-pay-amount" style="font-weight: 700; background: #dc3545; color: white; border-radius: 10px;">Rs. ${formatNumber(totalToPayAmount)}</td>`;
+            html += '</tr>';
+
+            html += '</tbody></table></div>';
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function showDetails(index) {
+            const row = allData[index];
+            const months = ['OCTOBER', 'NOVEMBER', 'DECEMBER', 'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY'];
+            
+            document.getElementById('modalName').textContent = row.NAME || '';
+            document.getElementById('modalItemAmount').textContent = 'Item Amount: Rs. ' + formatNumber(row['ITEM AMOUNT'] || 0);
+            document.getElementById('modalPaidAmount').textContent = 'Rs. ' + formatNumber(row['PAID AMOUNT'] || 0);
+            document.getElementById('modalToPayAmount').textContent = 'Rs. ' + formatNumber(row['AMOUNT TO PAY'] || 0);
+            
+            let gridHtml = '';
+            months.forEach(month => {
+                const value = row[month];
+                let cardClass = 'empty';
+                let amount = '-';
+                
+                if (value && value !== '' && value !== 0) {
+                    const numValue = parseFloat(value);
+                    if (numValue > 0) {
+                        cardClass = 'paid';
+                        amount = 'Rs. ' + formatNumber(numValue);
+                    } else {
+                        cardClass = 'unpaid';
+                        amount = 'Not Paid';
+                    }
+                }
+                
+                gridHtml += `
+                    <div class="payment-card ${cardClass}">
+                        <div class="month-name">${month}</div>
+                        <div class="amount">${amount}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('paymentGrid').innerHTML = gridHtml;
+            document.getElementById('detailModal').style.display = 'block';
+        }
+
+        function calculateSummary(data) {
+            const totalRecords = data.length;
+            const totalPaid = data.reduce((sum, row) => sum + (parseFloat(row['PAID AMOUNT']) || 0), 0);
+            const totalToPay = data.reduce((sum, row) => sum + (parseFloat(row['AMOUNT TO PAY']) || 0), 0);
+
+            document.getElementById('totalRecords').textContent = totalRecords;
+            document.getElementById('totalPaid').textContent = 'Rs. ' + formatNumber(totalPaid);
+            document.getElementById('totalToPay').textContent = 'Rs. ' + formatNumber(totalToPay);
+            document.getElementById('summary').style.display = 'grid';
+        }
+
+        function formatNumber(num) {
+            return parseFloat(num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Modal close කරන්න
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        // Modal එකෙන් පිටතට click කරද්දී close කරන්න
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Page load වෙද්දී automatically data load කරනවා
+        window.onload = function() {
+            loadData();
+        };
+    </script>
+</body>
+</html>
+
